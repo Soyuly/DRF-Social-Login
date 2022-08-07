@@ -12,9 +12,13 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os, sys, json
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_BASE_FILE = os.path.join(BASE_DIR, 'secrets.json')
+
+
+# SECRET Key Settings
 
 secrets = json.loads(open(SECRET_BASE_FILE).read())
 for key, value in secrets.items():
@@ -25,7 +29,7 @@ for key, value in secrets.items():
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-e6#n5t7l017c@)cj#lj(!-7i+wx=c5*8f9kd=n8p)1%mbu6a6x'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -36,7 +40,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -62,7 +65,8 @@ INSTALLED_APPS = [
     
     # provider
     'allauth.socialaccount.providers.kakao',
-    'allauth.socialaccount.providers.google'
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.naver',
 ]
 
 MIDDLEWARE = [
@@ -154,9 +158,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     "allauth.account.auth_backends.AuthenticationBackend",
 # )
 
-SITE_ID = 3   # 만들 소셜 로그인 앱의 개수
-ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
-ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300
+SITE_ID = 4  # 만들 소셜 로그인 앱의 개수
+
 
 LOGIN_REDIRECT_URL = '/'  # 로그인 후 리다이렉트 될 경로
 
@@ -165,7 +168,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
+    
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     ),
 }
@@ -173,6 +176,7 @@ REST_FRAMEWORK = {
 
 REST_USE_JWT = True
 from datetime import timedelta
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
@@ -184,8 +188,8 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None # username 필드 사용 x
 ACCOUNT_EMAIL_REQUIRED = True            # email 필드 사용 o
 ACCOUNT_USERNAME_REQUIRED = False        # username 필드 사용 x
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300
 AUTH_USER_MODEL = 'login.User'
-
-
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 

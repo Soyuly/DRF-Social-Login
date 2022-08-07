@@ -40,8 +40,8 @@ class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True, max_length=255)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    USERNAME_FIELD = 'email' # 고유한 식별값, 아이디로 사용
+    REQUIRED_FIELDS = [] # 관리자 권한에 필요한 필드
 
     objects = UserManager()
 
